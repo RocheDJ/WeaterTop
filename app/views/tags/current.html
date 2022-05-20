@@ -1,0 +1,23 @@
+
+<div class="ui grid">
+    <div class="four wide column">
+        <div class="ui inverted segment">
+            Weather : <br> <span class="ui inverted blue text">${_station.currentConditions()}</span>
+        </div>
+    </div>
+    <div class="four wide column">
+        <div class="ui inverted segment">
+            Temp : <br> <span class="ui inverted blue text">${_station.currentTemp()}</span>
+        </div>
+    </div>
+    <div class="four wide column">
+        <div class="ui inverted segment">
+            Wind : <br> <span class="ui inverted blue text">${_station.currentWindCompass()} / ${_station.currentWind()} / ${_station.currentWindChill()} </span>
+        </div>
+    </div>
+    <div class="four wide column">
+        <div class="ui inverted segment">
+            Pressure : <br> <span class="ui inverted blue text">${_station.currentPressure()}</span>
+        </div>
+    </div>
+</div>
