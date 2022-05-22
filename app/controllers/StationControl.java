@@ -3,6 +3,8 @@ import models.Reading;
 import play.Logger;
 import play.mvc.Controller;
 
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.List;
 import models.Station;
 
@@ -29,13 +31,17 @@ public class StationControl extends Controller {
     public static void addReading(Long id,Integer code, Double temperature,Double windspeed, Integer winddirection,
                                   Integer pressure)
     {
-        Reading  reading= new Reading(code,temperature,windspeed,pressure,winddirection);
+        String sDate;
+        //Get the local date time as an object
+        LocalDateTime oDateObj = LocalDateTime.now();
+        DateTimeFormatter inputFormat = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
+        sDate=oDateObj.format(inputFormat);
+        Reading  reading= new Reading(code,temperature,windspeed,pressure,winddirection,sDate);
         Station station = Station.findById(id);
         station.readings.add(reading);
         station.save();
         redirect ("/station/" + id);
     }
-
 
 }
 

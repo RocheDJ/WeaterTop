@@ -2,6 +2,7 @@ package models;
 import play.db.jpa.Model;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 import javax.persistence.CascadeType;
@@ -22,19 +23,21 @@ public class Station extends Model {
     @OneToMany(cascade = CascadeType.ALL)
     public List<Reading> readings = new ArrayList<>();
 
-
     public Station(String sName)
     {
         this.name=sName;
         this.latitude = -90.00;
         this.longitude= -90.00;
     }
+
     public Station(String sName, Double dLatitude, Double dLongitude )
     {
         this.name=sName;
         this.latitude = dLatitude;
         this.longitude= dLongitude;
     }
+
+
     // converted from example on https://www.campbellsci.com/blog/convert-wind-directions
     final private static String[] Windsector = new String[]  {"N","NNE","NE","ENE","E","ESE","SE","SSE","S","SSW","SW","WSW","W","WNW","NW","NNW","N"};
 
@@ -149,7 +152,7 @@ public class Station extends Model {
         return sReturn;
     }
 
-    
+
 
     /**
      * Return current Temp as string in Deg C and F based on Appendix A - ii of specifications
@@ -316,6 +319,8 @@ public class Station extends Model {
 
 
 
+
+
     /**
      * Return current conditions as string based on Appendix A - i of specifications
      *
@@ -359,4 +364,5 @@ public class Station extends Model {
         }
         return sReturn;
     }
+
 }
