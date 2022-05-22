@@ -11,7 +11,9 @@ public class Bootstrap extends Job
 {
     public void doJob()
     {
-        Logger.info("Loading data.yml");
-        Fixtures.loadModels("data.yml");
+        if(Member.count()==0){
+            Logger.info("Loading data.yml");//only load from yml if blank
+            Fixtures.loadModels("data.yml");
+        }
     }
 }
