@@ -66,12 +66,30 @@
                     </div>
                 </div>
                 <div class="ui grid">
-                    <div class="stretched one column row">
+                    <div class="stretched two column row">
+                        <div class="column">
+                            <div class="ui inverted segment">   <span class="ui inverted blue text"> ${_station.currentTemp()}</span> </div>
+                        </div>
                         <div class="column">
                             <div class="ui inverted segment">
-                                <span class="ui inverted blue text"> ${_station.currentTemp()}</span>
-                            </div>
+                                #{if _station.trendTemperature(3) ==1 }
+                                <i class="big arrow up icon"></i>
+                                #{/if}
+
+                                #{if _station.trendTemperature(3) ==0 }
+                                <i class="big arrows alternate horizontal icon"></i>
+                                #{/if}
+
+                                #{if _station.trendTemperature(3) ==-1 }
+                                <i class="big arrow down icon"></i>
+                                #{/if}
+                           </div>
                         </div>
+                    </div>
+                </div>
+
+                <div class="ui grid">
+                    <div class="stretched one column row">
                         <div class="column">
                             <div class="ui inverted segment">
                                 <span class="ui inverted blue text"> Min : ${_station.minTemp()}</span><br>
@@ -96,10 +114,40 @@
                     </div>
                 </div>
                 <div class="ui grid">
+                    <div class="stretched two column row">
+                        <div class="column">
+                            <div class="ui inverted segment">
+                                <span class="ui inverted blue text">
+                                 ${_station.currentWindCompass()}
+                                </span>
+                            </div>
+                        </div>
+                        <div class="column">
+                            <div class="ui inverted segment">
+                                #{if _station.trendWind(3) ==1 }
+                                <i class="big arrow up icon"></i>
+                                #{/if}
+
+                                #{if _station.trendWind(3) ==0 }
+                                <i class="big arrows alternate horizontal icon"></i>
+                                #{/if}
+
+                                #{if _station.trendWind(3) ==-1 }
+                                <i class="big arrow down icon"></i>
+                                #{/if}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+
+                <div class="ui grid">
                     <div class="stretched one column row">
                         <div class="column">
                             <div class="ui inverted segment">
-                                <span class="ui inverted blue text"> ${_station.currentWind()}<br>
+                                <span class="ui inverted blue text">
+                                    ${_station.currentWind(false)}<br>
+                                    ${_station.currentWind(true)}<br>
                                  Min : ${_station.minWindSpeed()}<br>Max : ${_station.maxWindSpeed()}<br>
                                 </span>
                             </div>
@@ -107,7 +155,6 @@
                         <div class="column">
                             <div class="ui inverted segment">
                                 <span class="ui inverted blue text">
-                                    ${_station.currentWindCompass()}<br>
                                     ${_station.currentWindChill()}
                                 </span>
                             </div>
@@ -130,6 +177,35 @@
                     </div>
                 </div>
                 <div class="ui grid">
+                    <div class="stretched two column row">
+                        <div class="column">
+                            <div class="ui inverted segment">
+                                 <span class="ui inverted blue text">
+                                    ${_station.currentPressure()}
+                                 </span>
+                            </div>
+                        </div>
+                        <div class="column">
+                            <div class="ui inverted segment">
+                                #{if _station.trendPressure(3) ==1 }
+                                <i class="big arrow up icon"></i>
+                                #{/if}
+
+                                #{if _station.trendPressure(3) ==0 }
+                                <i class="big arrows alternate horizontal icon"></i>
+                                #{/if}
+
+                                #{if _station.trendPressure(3) ==-1 }
+                                <i class="big arrow down icon"></i>
+                                #{/if}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+
+
+                <div class="ui grid">
                     <div class="stretched one column row">
                         <div class="column">
                             <div class="ui inverted segment">
@@ -144,6 +220,7 @@
                                 </span>
                             </div>
                         </div>
+
                     </div>
                 </div>
             </div>

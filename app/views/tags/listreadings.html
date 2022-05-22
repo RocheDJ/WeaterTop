@@ -1,12 +1,19 @@
-<table class="ui fixed table">
+${_station.SortByDate(true)}
+<table class="ui sortable celled table">
     <thead>
     <tr>
-        <th>Date/Time</th>
+        #{if _station.ReadingsSortedbyDateDec()==false }
+            <th class="sorted ascending">Date/Time</th>
+        #{/if}
+        #{if _station.ReadingsSortedbyDateDec()==true }
+            <th class="sorted descending">Date/Time</th>
+        #{/if}
         <th>Code</th>
         <th>Temperature</th>
         <th>Wind Direction</th>
         <th>Wind Speed</th>
         <th>Pressure</th>
+        <th>Delete</th>
     </tr>
     </thead>
     <tbody>
@@ -29,6 +36,9 @@
         </td>
         <td>
             ${reading.pressure}
+        </td>
+        <td>
+            <a href="/station/${_station.id}/deletereading/${reading.id}"><button class="ui button"><i class="trash alternate icon"></i></button> </a>
         </td>
     </tr>
     #{/list}

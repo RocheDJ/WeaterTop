@@ -2,9 +2,11 @@ package controllers;
 import models.Reading;
 import play.Logger;
 import play.mvc.Controller;
+import java.time.LocalDateTime; // Import the LocalDateTime class
 
-import java.time.LocalDateTime;
+import java.time.ZoneOffset;
 import java.time.format.DateTimeFormatter;
+import java.util.ArrayList;
 import java.util.List;
 import models.Station;
 
@@ -19,12 +21,11 @@ public class StationControl extends Controller {
 
     public static void delete (Long id)
     {
-        //check out fromantic modal forms to confirm these actions....
         Station station = Station.findById(id);
         Logger.info ("Removing " + station.name);
         station.delete();
-        List<Station> Stations = station.findAll();
-        render ("dashboard.html", Stations);
+        List<Station> stationlist = Station.findAll();// create a list of all the stations in out station list
+        render ("dashboard.html",stationlist);
     }
 
 
@@ -43,6 +44,15 @@ public class StationControl extends Controller {
         redirect ("/station/" + id);
     }
 
+    public static void deleteReading(Long id,long lReadingID)
+    {
+        Logger.info ("Delete Reading from Station id = " + id + " Reading id = "+ lReadingID);
+        Station oStation = Station.findById(id); // get the station
+        Reading oReading =Reading.findById(lReadingID);//get the reading
+        oStation.readings.remove(oReading);//remove the reading by passing the object to remove
+        oStation.save();//save the station
+        redirect ("/station/" + id);
+    }
 }
 
 
