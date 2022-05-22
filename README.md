@@ -2,7 +2,7 @@
 
 # Student ID  
 
-# Readme file for Web Development /Programming Joint Assignment Weater Top  (May 2022) 
+# Readme file for Programming-Web Development / Joint Assignment "WeatherTop"  (May 2022)
 
 ## Introduction
 WeatherTop Inc. produce a modular weather station called the WeatherTop 1000. This low-cost device takes a set of meteorological readings and displays these on a simple LCD

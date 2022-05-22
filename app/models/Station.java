@@ -17,6 +17,8 @@ import javax.persistence.OneToMany;
 @Entity
 public class Station extends Model {
     public String name;
+    public Double latitude;
+    public Double longitude;
     @OneToMany(cascade = CascadeType.ALL)
     public List<Reading> readings = new ArrayList<>();
 
@@ -24,8 +26,15 @@ public class Station extends Model {
     public Station(String sName)
     {
         this.name=sName;
+        this.latitude = -90.00;
+        this.longitude= -90.00;
     }
-
+    public Station(String sName, Double dLatitude, Double dLongitude )
+    {
+        this.name=sName;
+        this.latitude = dLatitude;
+        this.longitude= dLongitude;
+    }
     // converted from example on https://www.campbellsci.com/blog/convert-wind-directions
     final private static String[] Windsector = new String[]  {"N","NNE","NE","ENE","E","ESE","SE","SSE","S","SSW","SW","WSW","W","WNW","NW","NNW","N"};
 
@@ -41,7 +50,7 @@ public class Station extends Model {
 
 
     /**
-     * Return current Temp as string in Deg C and F based on Appendix A - ii of specifications
+     * Return current pressure as string in Deg C and F based on Appendix A - ii of specifications
      *
      * @version (03-May-2022)
      */
@@ -57,6 +66,90 @@ public class Station extends Model {
         return sReturn;
     }
 
+    /**
+     * Return max pressure as string in Deg C and F based on Appendix A - ii of specifications
+     *
+     * @version (15-May-2022)
+     */
+    public String maxPressure(){
+        String sReturn = "---";
+        try{
+            Integer iMaxPressure = readings.get(0).pressure;
+            for (Integer iX = 1; iX < readings.size();iX++ ){
+                if(readings.get(iX).pressure >iMaxPressure) {
+                    iMaxPressure = readings.get(iX).pressure;
+                }
+            }
+            sReturn = iMaxPressure + " hPa ";
+        } catch(Exception eX){
+            sReturn ="Error " +eX.getMessage();
+        }
+        return sReturn;
+    }
+
+    /**
+     * Return min pressure as string in Deg C and F based on Appendix A - ii of specifications
+     *
+     * @version (15-May-2022)
+     */
+    public String minPressure(){
+        String sReturn = "---";
+        try{
+            Integer iMinPressure = readings.get(0).pressure;
+            for (Integer iX = 1; iX < readings.size();iX++ ){
+                if(readings.get(iX).pressure <iMinPressure) {
+                    iMinPressure = readings.get(iX).pressure;
+                }
+            }
+            sReturn = iMinPressure + " hPa ";
+        } catch(Exception eX){
+            sReturn ="Error " +eX.getMessage();
+        }
+        return sReturn;
+    }
+    /**
+     * Return max temperiture as string in Deg C and F based on Appendix A - ii of specifications
+     *
+     * @version (15-May-2022)
+     */
+    public String maxTemp(){
+        String sReturn = "---";
+        try{
+            Double iMaxTemp = readings.get(0).temperature;
+            for (Integer iX = 1; iX < readings.size();iX++ ){
+                if(readings.get(iX).temperature >iMaxTemp) {
+                    iMaxTemp = readings.get(iX).temperature;
+                }
+            }
+            sReturn = iMaxTemp + "  Deg C  ";
+        } catch(Exception eX){
+            sReturn ="Error " +eX.getMessage();
+        }
+        return sReturn;
+    }
+
+    /**
+     * Return min temperature as string in Deg C and F based on Appendix A - ii of specifications
+     *
+     * @version (15-May-2022)
+     */
+    public String minTemp(){
+        String sReturn = "---";
+        try{
+            double iMinTemp = readings.get(0).temperature;
+            for (Integer iX = 1; iX < readings.size();iX++ ){
+                if(readings.get(iX).temperature <iMinTemp) {
+                    iMinTemp = readings.get(iX).temperature;
+                }
+            }
+            sReturn = iMinTemp + " Deg C ";
+        } catch(Exception eX){
+            sReturn ="Error " +eX.getMessage();
+        }
+        return sReturn;
+    }
+
+    
 
     /**
      * Return current Temp as string in Deg C and F based on Appendix A - ii of specifications
@@ -121,6 +214,48 @@ public class Station extends Model {
             sReturn ="Error " +eX.getMessage();
         }
 
+        return sReturn;
+    }
+
+    /**
+     * Return min win speed as string in kph based on Appendix A - ii of specifications
+     *
+     * @version (15-May-2022)
+     */
+    public String minWindSpeed(){
+        String sReturn = "---";
+        try{
+            double dMinSpeed = readings.get(0).windSpeed;
+            for (Integer iX = 1; iX < readings.size();iX++ ){
+                if(readings.get(iX).windSpeed <dMinSpeed) {
+                    dMinSpeed = readings.get(iX).windSpeed;
+                }
+            }
+            sReturn = dMinSpeed + " kph ";
+        } catch(Exception eX){
+            sReturn ="Error " +eX.getMessage();
+        }
+        return sReturn;
+    }
+
+    /**
+     * Return max wind speed as string in kph based on Appendix A - ii of specifications
+     *
+     * @version (15-May-2022)
+     */
+    public String maxWindSpeed(){
+        String sReturn = "---";
+        try{
+            double dMaxSpeed = readings.get(0).windSpeed;
+            for (Integer iX = 1; iX < readings.size();iX++ ){
+                if(readings.get(iX).windSpeed >dMaxSpeed) {
+                    dMaxSpeed = readings.get(iX).windSpeed;
+                }
+            }
+            sReturn = dMaxSpeed + " kph ";
+        } catch(Exception eX){
+            sReturn ="Error " +eX.getMessage();
+        }
         return sReturn;
     }
 

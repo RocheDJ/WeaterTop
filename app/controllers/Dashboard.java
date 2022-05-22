@@ -1,5 +1,6 @@
 package controllers;
 
+import models.Member;
 import play.Logger;
 import play.mvc.Controller;
 import models.Station;
@@ -10,16 +11,17 @@ public class Dashboard extends Controller
 {
   public static void index() {
     Logger.info("Rendering Dashboard");
+    Member member = Accounts.getLoggedInMember();
+   // List<Station> stations = Station.findAll();// create a list of all the stations in out station list
+    List<Station> stations = member.stations;
 
-    List<Station> stationlist = Station.findAll();// create a list of all the stations in out station list
-
-    render ("dashboard.html",stationlist);
+    render ("dashboard.html",member,stations);
   }
 
-  public static void addStation(String name)
+  public static void addStation(String name,Double latitude,Double longitude)
   {
-    Station station = new Station(name);
-    Logger.info ("Adding a new station called " + name);
+    Station station = new Station(name,latitude,longitude);
+    Logger.info ("Adding a new station called " + name + "@" + latitude +":"+ longitude);
     station.save();
     redirect ("/dashboard");
   }
