@@ -1,15 +1,11 @@
 package models;
-
 import play.db.jpa.Model;
-
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
-
 import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.OneToMany;
-
 
 /**
  * This is the WeatherStation class that stores the name and readings for the Station
@@ -36,7 +32,6 @@ public class Station extends Model {
     this.longitude = dLongitude;
   }
 
-
   // converted from example on https://www.campbellsci.com/blog/convert-wind-directions
   final private static String[] Windsector = new String[]{"N", "NNE", "NE", "ENE", "E", "ESE", "SE", "SSE",
       "S", "SSW", "SW", "WSW", "W", "WNW", "NW", "NNW", "N"};
@@ -48,9 +43,8 @@ public class Station extends Model {
   }
 
   private Reading currentReading() {
-    Integer iLastReadingIndex;
-    iLastReadingIndex = readings.size() - 1;
-    return readings.get(iLastReadingIndex);
+    SortByDate(true);
+    return readings.get(0);
   }
 
   /**

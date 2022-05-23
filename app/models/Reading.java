@@ -38,15 +38,12 @@ public class Reading extends Model {
     setDate(sDate);
   }
 
-
   //adapted from post on https://stackoverflow.com/questions/2784514/sort-arraylist-of-custom-objects-by-property
   public static class CompareLogDate implements Comparator<Reading> {
     private int mod = 1;
-
     public CompareLogDate(boolean desc) {
       if (desc) mod = -1;
     }
-
     @Override
     public int compare(Reading arg0, Reading arg1) {
       return mod * arg0.epocDateSeconds.compareTo(arg1.epocDateSeconds);
@@ -61,7 +58,6 @@ public class Reading extends Model {
 
     return sReturnValue;
   }
-
 
   public void setDate(String sDate) {
     String sTempDate;
