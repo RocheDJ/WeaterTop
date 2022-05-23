@@ -42,7 +42,7 @@ public class Station extends Model {
     return dCelcious * (9 / 5) + 32;
   }
 
-  private Reading currentReading() {
+  private  Reading currentReading() {
     SortByDate(true);
     return readings.get(0);
   }
@@ -404,7 +404,7 @@ public class Station extends Model {
 
 
   public void SortByDate(Boolean xDecending) {
-    Collections.sort(this.readings, new Reading.CompareLogDate(xDecending));
+    Collections.sort(readings, new Reading.CompareLogDate(xDecending));
     xReadingsDateDec = xDecending;
   }
 
