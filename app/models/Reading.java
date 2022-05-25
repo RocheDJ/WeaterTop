@@ -29,7 +29,8 @@ public class Reading extends Model {
                  Double dWindSpeed,
                  Integer iPressure,
                  Integer iWindDirection,
-                 String sDate) {
+                 String sDate)
+  {
     try {
       if (iCode > 0) {
         this.code = iCode;
@@ -74,17 +75,14 @@ public class Reading extends Model {
       this.windDirection = 0;
       setDate("2000-01-01 00:00:00");
     }
-
   }
 
   //adapted from post on https://stackoverflow.com/questions/2784514/sort-arraylist-of-custom-objects-by-property
   public static class CompareLogDate implements Comparator<Reading> {
     private int mod = 1;
-
     public CompareLogDate(boolean desc) {
       if (desc) mod = -1;
     }
-
     @Override
     public int compare(Reading arg0, Reading arg1) {
       return mod * arg0.epocDateSeconds.compareTo(arg1.epocDateSeconds);

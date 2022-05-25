@@ -1,7 +1,10 @@
 package models;
+
 import play.db.jpa.Model;
+
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 import javax.persistence.CascadeType;
 import javax.persistence.Entity;
@@ -21,15 +24,41 @@ public class Station extends Model {
   public List<Reading> readings = new ArrayList<>();
 
   public Station(String sName) {
+    if (sName == null) {
+      sName = "No Name";
+    }
     this.name = sName;
     this.latitude = -90.00;
     this.longitude = -90.00;
   }
 
   public Station(String sName, Double dLatitude, Double dLongitude) {
+    if (sName == null) {
+      sName = "No Name";
+    }
+    if ((dLatitude > 90.0) || (dLatitude < -90.0)) {
+      dLatitude = -90d;
+    }
+    if ((dLongitude > 180.0) || (dLongitude < -180.0)) {
+      dLongitude = -180d;
+    }
+
     this.name = sName;
     this.latitude = dLatitude;
     this.longitude = dLongitude;
+  }
+
+  public static class CompareName implements Comparator<Station> {
+    private int mod = 1;
+
+    public CompareName(boolean desc) {
+      if (desc) mod = -1;
+    }
+
+    @Override
+    public int compare(Station arg0, Station arg1) {
+      return mod * arg0.name.compareTo(arg1.name);
+    }
   }
 
   // converted from example on https://www.campbellsci.com/blog/convert-wind-directions
@@ -42,7 +71,7 @@ public class Station extends Model {
     return dCelcious * (9 / 5) + 32;
   }
 
-  private  Reading currentReading() {
+  private Reading currentReading() {
     SortByDate(true);
     return readings.get(0);
   }

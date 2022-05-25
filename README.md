@@ -13,4 +13,10 @@ A repository for the WeatherTop project is here [GitHubRepo](https://github.com/
 ## Live Web Deployment
 A Live Web-deployment the WeatherTop project is here [HerokuPage](https://warm-peak-91173.herokuapp.com)
 ## External references used
-Form validation [MDN](https://developer.mozilla.org/en-US/docs/Learn/Forms/Form_validation#built-in_form_validation_examples)
+- Wind direction in degrees to Cardinal Points conversion  
+  - [Campbell Scientific](https://www.campbellsci.com/blog/convert-wind-directions)
+- Interface Comparitor used when sorting arrays of objects;
+  - [Java Reference](https://docs.oracle.com/javase/6/docs/api/java/util/Comparator.html)
+  - [Stack Overflow](https://stackoverflow.com/questions/2784514/sort-arraylist-of-custom-objects-by-property)
+- Form validation
+  - [MDN](https://developer.mozilla.org/en-US/docs/Learn/Forms/Form_validation#built-in_form_validation_examples)

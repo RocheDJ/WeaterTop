@@ -1,6 +1,7 @@
 package controllers;
 
 import models.Member;
+import org.hibernate.engine.internal.Collections;
 import play.Logger;
 import play.mvc.Controller;
 import models.Station;
@@ -12,7 +13,7 @@ public class Dashboard extends Controller {
     Logger.info("Rendering Dashboard");
     Member member = Accounts.getLoggedInMember();
     List<Station> stations = member.stations;
-
+    stations.sort(new Station.CompareName(false));
     render("dashboard.html", member, stations);
   }
 

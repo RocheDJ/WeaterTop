@@ -3,6 +3,7 @@ package controllers;
 import models.Reading;
 import play.Logger;
 import play.mvc.Controller;
+
 import java.time.LocalDateTime; // Import the LocalDateTime class
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
@@ -18,11 +19,13 @@ public class StationControl extends Controller {
     render("station.html", station);
   }
 
+
   public static void delete(Long id) {
     Station station = Station.findById(id);
     Logger.info("Removing " + station.name);
     station.delete();
     List<Station> stationlist = Station.findAll();// create a list of all the stations in out station list
+    stationlist.sort(new Station.CompareName(false));
     render("dashboard.html", stationlist);
   }
 
