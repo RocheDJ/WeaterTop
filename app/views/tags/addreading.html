@@ -2,7 +2,7 @@
     <div class="two fields">
         <div class="field">
             <label>Code</label>
-            <select class="ui fluid search dropdown"  name="code">
+            <select class="ui fluid search dropdown"  name="code" required>
                 <option value="100">Clear</option>
                 <option value="200">Partial Clouds</option>
                 <option value="300">Cloudy</option>
@@ -16,19 +16,19 @@
         <div class="field">
             <label>Temperature</label>
             <!-- https://html.spec.whatwg.org/multipage/input.html#the-step-attribute -->
-            <input placeholder="Temperature" type="number" step="0.1" name="temperature">
+            <input placeholder="Temperature" type="number" step="0.1" name="temperature" required>
         </div>
         <div class="field">
             <label>Wind Direction</label>
-            <input placeholder="Wind Direction" type="number" name="winddirection">
+            <input placeholder="Wind Direction" type="number" step="0.1" name="winddirection" min="0" max="360" required>
         </div>
         <div class="field">
             <label>Wind Speed</label>
-            <input placeholder="Wind Speed" type="number" step="0.1" name="windspeed">
+            <input placeholder="Wind Speed" type="number" step="1.0" name="windspeed" required>
         </div>
         <div class="field">
             <label>Pressure</label>
-            <input placeholder="Pressure" type="number" name="pressure">
+            <input placeholder="Pressure" type="number" name="pressure" required>
         </div>
     </div>
     <button class="ui blue submit button">Add Reading</button>

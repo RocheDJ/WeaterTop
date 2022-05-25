@@ -30,20 +30,61 @@ public class Reading extends Model {
                  Integer iPressure,
                  Integer iWindDirection,
                  String sDate) {
-    this.code = iCode;
-    this.temperature = dTemperature;
-    this.windSpeed = dWindSpeed;
-    this.pressure = iPressure;
-    this.windDirection = iWindDirection;
-    setDate(sDate);
+    try {
+      if (iCode > 0) {
+        this.code = iCode;
+      }
+      if (dTemperature != null){
+        this.temperature = dTemperature;
+      }else{
+        this.temperature = 0d;
+      }
+      if ((dWindSpeed != null) || (dWindSpeed < 0)){
+        this.windSpeed = dWindSpeed;
+      }else{
+        this.windSpeed = 0d;
+      }
+      if(iPressure ==null){
+        iPressure = 1013; // nominal pressure
+      } else if (iPressure >2000){
+        iPressure =2000; //max pressure on earth ever recorded was 1084
+      }else if (iPressure < 500 ){
+        iPressure =500;//870 would be in a tornado
+      }
+      this.pressure = iPressure;
+
+      // Clamp the wind Direction 0 to 360 degrees
+      if ((iWindDirection==null) || (iWindDirection<0)) {
+        iWindDirection = 0;
+      }else if(iWindDirection>360){
+        iWindDirection =360;
+      }
+
+      this.windDirection = iWindDirection;
+      if(sDate ==null){
+        sDate="2000-01-01 00:00:00";
+      }
+      setDate(sDate);
+    } catch (Exception eX) {
+     //add dummy data to db
+      this.code =0;
+      this.temperature = 0d;
+      this.windSpeed = 0d;
+      this.pressure = 0;
+      this.windDirection = 0;
+      setDate("2000-01-01 00:00:00");
+    }
+
   }
 
   //adapted from post on https://stackoverflow.com/questions/2784514/sort-arraylist-of-custom-objects-by-property
   public static class CompareLogDate implements Comparator<Reading> {
     private int mod = 1;
+
     public CompareLogDate(boolean desc) {
       if (desc) mod = -1;
     }
+
     @Override
     public int compare(Reading arg0, Reading arg1) {
       return mod * arg0.epocDateSeconds.compareTo(arg1.epocDateSeconds);

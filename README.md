@@ -12,3 +12,5 @@ display. WeatherTop Inc. are seeking a Web companion application for the device.
 A repository for the WeatherTop project is here [GitHubRepo](https://github.com/RocheDJ/WeaterTop.git) 
 ## Live Web Deployment
 A Live Web-deployment the WeatherTop project is here [HerokuPage](https://warm-peak-91173.herokuapp.com)
+## External references used
+Form validation [MDN](https://developer.mozilla.org/en-US/docs/Learn/Forms/Form_validation#built-in_form_validation_examples)

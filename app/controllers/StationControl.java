@@ -3,10 +3,7 @@ package controllers;
 import models.Reading;
 import play.Logger;
 import play.mvc.Controller;
-
 import java.time.LocalDateTime; // Import the LocalDateTime class
-
-import java.time.ZoneOffset;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
@@ -35,6 +32,7 @@ public class StationControl extends Controller {
     String sDate;
     //Get the local date time as an object
     LocalDateTime oDateObj = LocalDateTime.now();
+    //format that date and time as string
     DateTimeFormatter inputFormat = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
     sDate = oDateObj.format(inputFormat);
     Reading reading = new Reading(code, temperature, windspeed, pressure, winddirection, sDate);
