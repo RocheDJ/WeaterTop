@@ -6,23 +6,24 @@
     <div class="column">
         <form class="ui stacked segment form" action="/register" method="POST">
             <h3 class="ui header">Register</h3>
+            <h4 class="ui header" >All fields are required.</h4>
             <div class="two fields">
                 <div class="field">
                     <label>First Name</label>
-                    <input placeholder="First Name" type="text" name="firstname">
+                    <input placeholder="First Name" type="text" name="firstname" required >
                 </div>
                 <div class="field">
                     <label>Last Name</label>
-                    <input placeholder="Last Name" type="text" name="lastname">
+                    <input placeholder="Last Name" type="text" name="lastname" required >
                 </div>
             </div>
             <div class="field">
                 <label>Email</label>
-                <input placeholder="Email" type="text" name="email">
+                <input placeholder="Email" type="email" name="email" required >
             </div>
             <div class="field">
                 <label>Password</label>
-                <input type="password" name="password">
+                <input type="password" name="password" maxlength="10" minlength="4"  required >
             </div>
             <button class="ui blue submit button">Submit</button>
         </form>

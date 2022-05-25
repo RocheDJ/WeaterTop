@@ -3,20 +3,21 @@ package controllers;
 import models.Reading;
 import play.Logger;
 import play.mvc.Controller;
-
 import java.time.LocalDateTime; // Import the LocalDateTime class
 import java.time.format.DateTimeFormatter;
-import java.util.ArrayList;
 import java.util.List;
-
 import models.Station;
 
 public class StationControl extends Controller {
 
   public static void index(Long id) {
-    Station station = Station.findById(id);
-    Logger.info("Selected Station id = " + id);
-    render("station.html", station);
+    if(session.isEmpty()){
+      render("login.html");
+    }else {
+      Station station = Station.findById(id);
+      Logger.info("Selected Station id = " + id);
+      render("station.html", station);
+    }
   }
 
 

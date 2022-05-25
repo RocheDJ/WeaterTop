@@ -15,6 +15,8 @@ A Live Web-deployment the WeatherTop project is here [HerokuPage](https://warm-p
 ## External references used
 - Wind direction in degrees to Cardinal Points conversion  
   - [Campbell Scientific](https://www.campbellsci.com/blog/convert-wind-directions)
+- GPS coordinate limits
+  - [MapBox](https://docs.mapbox.com/help/glossary/lat-lon/#:~:text=Latitude%20and%20longitude%20are%20a,180%20to%20180%20for%20longitude.)
 - Interface Comparitor used when sorting arrays of objects;
   - [Java Reference](https://docs.oracle.com/javase/6/docs/api/java/util/Comparator.html)
   - [Stack Overflow](https://stackoverflow.com/questions/2784514/sort-arraylist-of-custom-objects-by-property)
