@@ -24,19 +24,24 @@ public class Accounts extends Controller {
   }
 
 
-  public static void update(String firstname, String lastname, String email, String password) {
+  public static void update(String firstname, String lastname, String email, String passwordOld, String passwordNew,String passwordConfirm) {
     Logger.info("Up-dating " + email);
     Member member = null;
+    Boolean updatedOK = false;
     if (session.contains("logged_in_Memberid")) {
       String memberId = session.get("logged_in_Memberid");
       member = Member.findById(Long.parseLong(memberId));
-      member.email=email;
-      member.firstname=firstname;
-      member.lastname=lastname;
-      member.password=password;
-      member.save();
+      //Only allow editing if old password is valid and new passwords and confirm are a match
+      if((member.password.equals(passwordOld)) && (passwordNew.equals(passwordConfirm))){
+        member.email=email;
+        member.firstname=firstname;
+        member.lastname=lastname;
+        member.password=passwordNew;
+        member.save();
+        updatedOK =true;
+      }
     }
-    redirect("/editmember");
+    render("edit-member.html", member,updatedOK);
   }
 
 

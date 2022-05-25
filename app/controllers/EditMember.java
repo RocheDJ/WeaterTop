@@ -14,7 +14,8 @@ public class EditMember extends Controller {
     }else {
       Logger.info("Rendering EditMember");
       Member member = Accounts.getLoggedInMember();
-      render("edit-member.html", member);
+      Boolean updatedOK = true;
+      render("edit-member.html", member,updatedOK);
     }
   }
 

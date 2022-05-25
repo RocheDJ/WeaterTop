@@ -7,7 +7,7 @@
     Edit details for ${member.firstname} ${member.lastname}
   </header>
 </section>
-
+#{if updatedOK==true }
 <div class="ui two column grid basic middle aligned segment">
   <div class="column">
     <img class="ui image" src="/public/images/ios_weather_icons.jpg">
@@ -17,23 +17,67 @@
       <div class="two fields">
         <div class="field">
           <label>First Name</label>
-          <input placeholder="First Name" type="text" name="firstname" value="${member.firstname}" >
+          <input placeholder="First Name" type="text" name="firstname" value="${member.firstname}" required>
         </div>
         <div class="field">
           <label>Last Name</label>
-          <input placeholder="Last Name" type="text" name="lastname" value="${member.lastname}">
+          <input placeholder="Last Name" type="text" name="lastname" value="${member.lastname}" required>
         </div>
       </div>
       <div class="field">
         <label>Email</label>
-        <input placeholder="Email" type="text" name="email" value="${member.email}">
+        <input placeholder="Email" type="email" name="email" value="${member.email}" required>
       </div>
       <div class="field">
-        <label>Password</label>
-        <input type="password" name="password" value="${member.password}">
+        <label>Old Password</label>
+        <input type="password" name="passwordOld" id="oldPassword" value="" maxlength="10" minlength="4" required>
+        <label>New Password</label>
+        <input type="password" name="passwordNew" id="newPassword" maxlength="10" minlength="4" required>
+        <label>Confirm New Password</label>
+        <input type="password" name="passwordConfirm" id="ConfirmPassword" maxlength="10" minlength="4" required>
+      </div>
+      <div class="field">
+        <input type="checkbox" onclick="showPasswords()">Show Password Texts
       </div>
       <button class="ui blue submit button">Update</button>
     </form>
   </div>
-
+  <script>
+      function showPasswords() {
+          var x = document.getElementById("oldPassword");
+          var y = document.getElementById("newPassword");
+          var z = document.getElementById("ConfirmPassword");
+          if (x.type === "password") {
+              x.type = "text";
+          } else {
+              x.type = "password";
+          }
+          if (y.type === "password") {
+              y.type = "text";
+          } else {
+              y.type = "password";
+          }
+          if (z.type === "password") {
+              z.type = "text";
+          } else {
+              z.type = "password";
+          }
+      }
+  </script>
 </div>
+#{/if}
+#{if updatedOK==false }
+<div class="ui two column grid basic middle aligned segment">
+  <div class="column">
+    <img class="ui image" src="/public/images/ios_weather_icons.jpg">
+  </div>
+  <div class="column">
+    <div class="field">
+      <div class="ui right icon label big">
+        Error Updating Details Please try again.
+        <i class="times icon big red"></i>
+      </div>
+    </div>
+  </div>
+</div>
+#{/if}
