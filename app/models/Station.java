@@ -2,6 +2,7 @@ package models;
 
 import play.Logger;
 import play.db.jpa.Model;
+import utils.StationUtilities;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -10,6 +11,7 @@ import java.util.List;
 import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.OneToMany;
+
 
 /**
  * This is the WeatherStation class that stores the name and readings for the Station
@@ -79,17 +81,8 @@ public class Station extends Model {
     return !xReadingsDateDec;
   }
 
-  /*construct an array of strings that are the wind directions
-  converted from example on https://www.campbellsci.com/blog/convert-wind-directions
-   */
-  final private static String[] Windsector = new String[]{"N", "NNE", "NE", "ENE", "E", "ESE", "SE", "SSE",
-      "S", "SSW", "SW", "WSW", "W", "WNW", "NW", "NNW", "N"};
-
   private static Boolean xReadingsDateDec = false;
 
-  private Double CelsiusToFahrenheit(Double dCelcious) {
-    return dCelcious * (9 / 5) + 32;
-  }
 
   private Reading currentReading() {
     SortByDate(true);
@@ -113,7 +106,6 @@ public class Station extends Model {
 
   /*
    * Return max pressure as string in Deg C and F based on Appendix A - ii of specifications
-   *
    */
   public String maxPressure() {
     String sReturn = "---";
@@ -133,7 +125,6 @@ public class Station extends Model {
 
   /*
    * Return min pressure as string in Deg C and F based on Appendix A - ii of specifications
-   *
    */
   public String minPressure() {
     String sReturn = "---";
@@ -199,12 +190,13 @@ public class Station extends Model {
     String sReturn = "---";
     try {
       Reading lastReading = currentReading();
-      sReturn = lastReading.temperature + " C " + CelsiusToFahrenheit(lastReading.temperature) + " F";
+      sReturn = lastReading.temperature + " C " + StationUtilities.CelsiusToFahrenheit(lastReading.temperature) + " F";
     } catch (Exception eX) {
       Logger.error("currentTemp Error " + eX.getMessage());
     }
     return sReturn;
   }
+
   public Double currentTempValue() {
     Double dReturn = 0.0;
     try {
@@ -215,31 +207,19 @@ public class Station extends Model {
     }
     return dReturn;
   }
+
   /*
    * Return current Compass Direction as string in Cardinal Points based on Appendix A - iv of specifications
-   *
-   */
+  */
   public String currentWindCompass() {
     String sReturn = "---";
     try {
       Reading lastReading = currentReading();
-        /* from https://www.campbellsci.com/blog/convert-wind-directions
-         convert wind direction to integer values that correspond with the 17 index values within our array.
-        */
       Integer iWindDir = lastReading.windDirection;
-      Integer iIndex;
-      if (iWindDir > 360) {
-        iIndex = lastReading.windDirection % 360; // use modular division to get remainder if >360
-      } else {
-        iIndex = lastReading.windDirection;
-      }
-      double dIndex = (iIndex / 22.5);
-      iIndex = (int) Math.round(dIndex);
-      sReturn = Windsector[iIndex];
+      sReturn = StationUtilities.sCompasHeading(iWindDir);
     } catch (Exception eX) {
       Logger.error("currentWindCompass Error " + eX.getMessage());
     }
-
     return sReturn;
   }
 
@@ -308,98 +288,12 @@ public class Station extends Model {
     String sReturn = "---";
     try {
       Reading lastReading = currentReading();
-      double dWindSpeed = lastReading.windSpeed;
-      //start from max and work down returning after each check
-      if (dWindSpeed >= 103) {
-        if (xAsLabel) {
-          return "Violent Storm";
-        } else {
-          return "Force 11";
-        }
-      }
-      if (dWindSpeed >= 89) {
-        if (xAsLabel) {
-          return "Strong storm";
-        } else {
-          return "Force 10";
-        }
-      }
-      if (dWindSpeed >= 75) {
-        if (xAsLabel) {
-          return "Severe Gale";
-        } else {
-          return "Force 9";
-        }
-      }
-      if (dWindSpeed >= 62) {
-        if (xAsLabel) {
-          return "Gale";
-        } else {
-          return "Force 8";
-        }
-      }
-      if (dWindSpeed >= 50) {
-        if (xAsLabel) {
-          return "Near Gale";
-        } else {
-          return "Force 7";
-        }
-      }
-      if (dWindSpeed >= 39) {
-        if (xAsLabel) {
-          return "Strong Breeze";
-        } else {
-          return "Force 6";
-        }
-      }
-      if (dWindSpeed >= 29) {
-        if (xAsLabel) {
-          return "Fresh Breeze";
-        } else {
-          return "Force 5";
-        }
-      }
-      if (dWindSpeed >= 20) {
-        if (xAsLabel) {
-          return "Moderate Breeze";
-        } else {
-          return "Force 4";
-        }
-      }
-      if (dWindSpeed >= 12) {
-        if (xAsLabel) {
-          return "Gentle Breeze";
-        } else {
-          return "Force 3";
-        }
-      }
-      if (dWindSpeed >= 6) {
-        if (xAsLabel) {
-          return "Light Breeze";
-        } else {
-          return "Force 2";
-        }
-      }
-      if (dWindSpeed >= 1) {
-        if (xAsLabel) {
-          return "Light Air";
-        } else {
-          return "Force 1";
-        }
-      }
-      if (dWindSpeed >= 0) {
-        if (xAsLabel) {
-          return "Calm";
-        } else {
-          return "Force 0";
-        }
-      }
+      Double dWS = lastReading.windSpeed;
+      sReturn =StationUtilities.sBeauFortFromKph(dWS,xAsLabel);
     } catch (Exception eX) {
       Logger.error("currentWind Error " + eX.getMessage());
     }
-
     return sReturn;
-
   }
 
   /*Return current conditions as string based on Appendix A - i of specifications
@@ -408,34 +302,7 @@ public class Station extends Model {
     String sReturn = "";
     try {
       Reading lastReading = currentReading();
-      switch (lastReading.code) {
-        case 100:
-          sReturn = "Clear";
-          break;
-        case 200:
-          sReturn = "Partial clouds";
-          break;
-        case 300:
-          sReturn = "Cloudy";
-          break;
-        case 400:
-          sReturn = "Light showers";
-          break;
-        case 500:
-          sReturn = "Heavy showers";
-          break;
-        case 600:
-          sReturn = "Rain";
-          break;
-        case 700:
-          sReturn = "Snow";
-          break;
-        case 800:
-          sReturn = "Thunder";
-          break;
-        default:
-          sReturn = "Unknown code";
-      }
+      sReturn=StationUtilities.sConditionsFromCode(lastReading.code);
     } catch (Exception eX) {
       Logger.error("currentConditions Error " + eX.getMessage());
     }
@@ -445,36 +312,12 @@ public class Station extends Model {
   /*
    * Return Integer representing Trend of temp values Integer + Positive, - Negative , 0 Static
    */
-  public Integer trendTemperature() {
-    Integer iReturnValue = 0;
-    ArrayList<Double> xValues; //date time stamp
-    ArrayList<Double> yValues; //date time stamp
-    ArrayList<Reading> aReadings;// array of readings
-    xValues = new ArrayList<>();
-    yValues = new ArrayList<>();
-
-    for (Integer iX = 0; iX < this.readings.size(); iX++) {
-      Reading mReading = this.readings.get(iX);
-      yValues.add(mReading.temperature);
-      xValues.add(Double.valueOf(mReading.getId()));
-    }
-    Double dTrendValue = dTrend(xValues, yValues);
-    if (dTrendValue > 0) {
-      iReturnValue = 1;
-    } else if (dTrendValue < 0) {
-      iReturnValue = -1;
-    } else {
-      iReturnValue = 0;
-    }
-
-    return iReturnValue;
-  }
 
   //set max number of readings to trend
   public Integer trendTemperature(Integer iNoOfReadings) {
     Integer iReturnValue = 0;
     ArrayList<Double> xValues; //date time stamp
-    ArrayList<Double> yValues; //date time stamp
+    ArrayList<Double> yValues; //Value
     ArrayList<Reading> aReadings;// array of readings
     xValues = new ArrayList<>();
     yValues = new ArrayList<>();
@@ -490,7 +333,7 @@ public class Station extends Model {
       yValues.add(mReading.temperature);
       xValues.add(Double.valueOf(mReading.getId()));
     }
-    Double dTrendValue = dTrend(xValues, yValues);
+    Double dTrendValue = StationUtilities.dTrend(xValues, yValues);
     if (dTrendValue > 0) {
       iReturnValue = 1;
     } else if (dTrendValue < 0) {
@@ -504,31 +347,8 @@ public class Station extends Model {
 
   /*
    * Return Integer representing Trend of Pressure values Integer + Positive, - Negative , 0 Static
-   * allow overload if no value passed in then trend all values
+   *
    */
-  public Integer trendPressure() {
-    Integer iReturnValue = 0;
-    ArrayList<Double> xValues; //date time stamp
-    ArrayList<Double> yValues; //date time stamp
-
-    xValues = new ArrayList<>();
-    yValues = new ArrayList<>();
-    for (Integer iX = 0; iX < this.readings.size(); iX++) {
-      Reading mReading = this.readings.get(iX);
-      yValues.add(Double.valueOf(mReading.pressure));
-      xValues.add(Double.valueOf(mReading.getId()));
-    }
-    Double dTrendValue = dTrend(xValues, yValues);
-    if (dTrendValue > 0) {
-      iReturnValue = 1;
-    } else if (dTrendValue < 0) {
-      iReturnValue = -1;
-    } else {
-      iReturnValue = 0;
-    }
-
-    return iReturnValue;
-  }
 
   public Integer trendPressure(Integer iNoOfReadings) {
     Integer iReturnValue = 0;
@@ -548,7 +368,7 @@ public class Station extends Model {
       yValues.add(Double.valueOf(mReading.pressure));
       xValues.add(Double.valueOf(mReading.getId()));
     }
-    Double dTrendValue = dTrend(xValues, yValues);
+    Double dTrendValue = StationUtilities.dTrend(xValues, yValues);
     if (dTrendValue > 0) {
       iReturnValue = 1;
     } else if (dTrendValue < 0) {
@@ -563,30 +383,8 @@ public class Station extends Model {
 
   /*
    * Return Integer representing Trend of Wind speed values Integer + Positive, - Negative , 0 Static
-   * allow overload if no value passed in then trend all values
+   *
    */
-  public Integer trendWind() {
-    Integer iReturnValue = 0;
-    ArrayList<Double> xValues; //date time stamp
-    ArrayList<Double> yValues; //date time stamp
-    xValues = new ArrayList<>();
-    yValues = new ArrayList<>();
-
-    for (Integer iX = 0; iX < this.readings.size(); iX++) {
-      Reading mReading = this.readings.get(iX);
-      yValues.add(mReading.windSpeed);
-      xValues.add(Double.valueOf(mReading.getId()));
-    }
-    Double dTrendValue = dTrend(xValues, yValues);
-    if (dTrendValue > 0) {
-      iReturnValue = 1;
-    } else if (dTrendValue < 0) {
-      iReturnValue = -1;
-    } else {
-      iReturnValue = 0;
-    }
-    return iReturnValue;
-  }
 
   public Integer trendWind(Integer iNoOfReadings) {
     Integer iReturnValue = 0;
@@ -606,7 +404,7 @@ public class Station extends Model {
       yValues.add(mReading.windSpeed);
       xValues.add(Double.valueOf(mReading.getId()));
     }
-    Double dTrendValue = dTrend(xValues, yValues);
+    Double dTrendValue = StationUtilities.dTrend(xValues, yValues);
     if (dTrendValue > 0) {
       iReturnValue = 1;
     } else if (dTrendValue < 0) {
@@ -618,54 +416,5 @@ public class Station extends Model {
     return iReturnValue;
   }
 
-  /*
-   * Return average Value of a list of doubles
-   */
-  private static double average(List<Double> lstDouble) {
-    Double dReturn;
-    Double dTotal;
-    dTotal = 0d;
-    for (Integer iX = 0; iX < lstDouble.size(); iX++) {
-      dTotal = dTotal + lstDouble.get(iX);
-    }
-    dReturn = dTotal / lstDouble.size();
-    return dReturn;
-  }
-
-  /*
-   * Return the slope or trend for an array code based on formula outlined in
-   * https://study.com/academy/lesson/what-is-a-trend-line-in-math-definition-equation-analysis.html
-   */
-  private static double dTrend(ArrayList<Double> yList, ArrayList<Double> xList) {
-    Double dReturnValue;
-    dReturnValue = 0d; //0d sets the value to 0 as double same as 0.0
-
-    //get the average of the x coordinates (time stamp)
-    double yAvg = average(yList);
-    //get the average of the y coordinates (the value we are trending)
-    double xAvg = average(xList);
-
-    double sumNumerator = 0d;
-    double sumDenominator = 0d;
-    //for each point get
-    for (int i = 0; i < yList.size(); i++) {
-      //the differences between each y-coordinate and the average of all of the y-coordinates
-      double y = yList.get(i);
-      // the differences between each x-coordinate and the average of all of the x-coordinates
-      double x = xList.get(i);
-      double yDiff = y - yAvg;
-      double xDiff = x - xAvg;
-      // multiply columns 1 and 2
-      double numerator = xDiff * yDiff;
-      double denominator = xDiff * xDiff;
-      sumNumerator += numerator;
-      sumDenominator += denominator;
-    }
-    //Calculate the slope (m) of your trend line by dividing the total for Column 3 by the total for Column 4
-    double dSlope = sumNumerator / sumDenominator;
-
-    dReturnValue = dSlope;
-    return dReturnValue;
-  }
 
 }
