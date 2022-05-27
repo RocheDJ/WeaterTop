@@ -29,3 +29,8 @@ Project DB deployed using ElephantSQL
   - [Stack Overflow](https://stackoverflow.com/questions/2784514/sort-arraylist-of-custom-objects-by-property)
 - Form validation
   - [MDN](https://developer.mozilla.org/en-US/docs/Learn/Forms/Form_validation#built-in_form_validation_examples)
+- How to make a password readable
+  - [w3Schools](https://www.w3schools.com/howto/howto_js_toggle_password.asp)
+- Template,fomantic ui templates used in this app
+  - [Fomantic](https://fomantic-ui.com/)
+  
