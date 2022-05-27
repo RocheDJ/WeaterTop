@@ -9,7 +9,11 @@
               <div class="ui inverted segment"> ${_station.name}</div>
             </div>
             <div class="column">
-              <div class="ui inverted segment"><i class="big map marker icon blue"></i></div>
+              <div class="ui inverted segment" data-tooltip="Click icon to map GPS location in new window.">
+                <a href="https://www.google.ie/maps/place/${_station.latitude},${_station.longitude}" target="_blank">
+                  <i class="big map marker icon blue" > </i>
+                </a>
+             </div>
             </div>
           </div>
         </div>

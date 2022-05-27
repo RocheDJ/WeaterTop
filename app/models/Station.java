@@ -1,5 +1,6 @@
 package models;
 
+import play.Logger;
 import play.db.jpa.Model;
 
 import java.util.ArrayList;
@@ -12,8 +13,8 @@ import javax.persistence.OneToMany;
 
 /**
  * This is the WeatherStation class that stores the name and readings for the Station
- *
- * @version (03 - May - 2022)
+ * @version (27 - May - 2022)
+ * @author Dave
  */
 @Entity
 public class Station extends Model {
@@ -22,7 +23,7 @@ public class Station extends Model {
   public Double longitude;
   @OneToMany(cascade = CascadeType.ALL)
   public List<Reading> readings = new ArrayList<>();
-
+  //Constructors
   public Station(String sName) {
     if (sName == null) {
       sName = "No Name";
@@ -48,9 +49,13 @@ public class Station extends Model {
     this.longitude = dLongitude;
   }
 
+  /*CompareName subclass which uses the Arraylist Comparator function
+    to allow sorting of an object array, we also here use an input variable to control the
+    sorting order.
+   */
   public static class CompareName implements Comparator<Station> {
     private int mod = 1;
-
+    // constructor takes a boolean argument to assign ascending or descending order
     public CompareName(boolean desc) {
       if (desc) mod = -1;
     }
@@ -61,7 +66,22 @@ public class Station extends Model {
     }
   }
 
-  // converted from example on https://www.campbellsci.com/blog/convert-wind-directions
+  public void SortByDate(Boolean xDecending) {
+    Collections.sort(readings, new Reading.CompareLogDate(xDecending));
+    xReadingsDateDec = xDecending;
+  }
+
+  public boolean ReadingsSortedbyDateDec() {
+    return xReadingsDateDec;
+  }
+
+  public boolean ReadingsSortedbyDateAsc() {
+    return !xReadingsDateDec;
+  }
+
+  /*construct an array of strings that are the wind directions
+  converted from example on https://www.campbellsci.com/blog/convert-wind-directions
+   */
   final private static String[] Windsector = new String[]{"N", "NNE", "NE", "ENE", "E", "ESE", "SE", "SSE",
       "S", "SSW", "SW", "WSW", "W", "WNW", "NW", "NNW", "N"};
 
@@ -79,7 +99,6 @@ public class Station extends Model {
   /**
    * Return current pressure as string in Deg C and F based on Appendix A - ii of specifications
    *
-   * @version (03 - May - 2022)
    */
   public String currentPressure() {
     String sReturn = "---";
@@ -87,16 +106,14 @@ public class Station extends Model {
       Reading lastReading = currentReading();
       sReturn = lastReading.pressure + " hPa ";
     } catch (Exception eX) {
-      sReturn = "Error " + eX.getMessage();
+      Logger.error("currentPressure Error " + eX.getMessage());
     }
-
     return sReturn;
   }
 
   /**
    * Return max pressure as string in Deg C and F based on Appendix A - ii of specifications
    *
-   * @version (15 - May - 2022)
    */
   public String maxPressure() {
     String sReturn = "---";
@@ -109,7 +126,7 @@ public class Station extends Model {
       }
       sReturn = iMaxPressure + " hPa ";
     } catch (Exception eX) {
-      sReturn = "Error " + eX.getMessage();
+      Logger.error("maxPressure Error " + eX.getMessage());
     }
     return sReturn;
   }
@@ -117,7 +134,6 @@ public class Station extends Model {
   /**
    * Return min pressure as string in Deg C and F based on Appendix A - ii of specifications
    *
-   * @version (15 - May - 2022)
    */
   public String minPressure() {
     String sReturn = "---";
@@ -130,7 +146,7 @@ public class Station extends Model {
       }
       sReturn = iMinPressure + " hPa ";
     } catch (Exception eX) {
-      sReturn = "Error " + eX.getMessage();
+      Logger.error("minPressure Error " + eX.getMessage());
     }
     return sReturn;
   }
@@ -138,7 +154,6 @@ public class Station extends Model {
   /**
    * Return max temperiture as string in Deg C and F based on Appendix A - ii of specifications
    *
-   * @version (15 - May - 2022)
    */
   public String maxTemp() {
     String sReturn = "---";
@@ -151,7 +166,7 @@ public class Station extends Model {
       }
       sReturn = iMaxTemp + "  Deg C  ";
     } catch (Exception eX) {
-      sReturn = "Error " + eX.getMessage();
+      Logger.error("maxTemp Error " + eX.getMessage());
     }
     return sReturn;
   }
@@ -159,7 +174,6 @@ public class Station extends Model {
   /**
    * Return min temperature as string in Deg C and F based on Appendix A - ii of specifications
    *
-   * @version (15 - May - 2022)
    */
   public String minTemp() {
     String sReturn = "---";
@@ -172,7 +186,7 @@ public class Station extends Model {
       }
       sReturn = iMinTemp + " Deg C ";
     } catch (Exception eX) {
-      sReturn = "Error " + eX.getMessage();
+      Logger.error("minTemp Error " + eX.getMessage());
     }
     return sReturn;
   }
@@ -180,7 +194,6 @@ public class Station extends Model {
   /**
    * Return current Temp as string in Deg C and F based on Appendix A - ii of specifications
    *
-   * @version (03 - May - 2022)
    */
   public String currentTemp() {
     String sReturn = "---";
@@ -188,7 +201,7 @@ public class Station extends Model {
       Reading lastReading = currentReading();
       sReturn = lastReading.temperature + " C " + CelsiusToFahrenheit(lastReading.temperature) + " F";
     } catch (Exception eX) {
-      sReturn = "Error " + eX.getMessage();
+      Logger.error("currentTemp Error " + eX.getMessage());
     }
     return sReturn;
   }
@@ -196,7 +209,6 @@ public class Station extends Model {
   /**
    * Return current Compass Direction as string in Cardinal Points based on Appendix A - iv of specifications
    *
-   * @version (03 - May - 2022)
    */
   public String currentWindCompass() {
     String sReturn = "---";
@@ -216,7 +228,7 @@ public class Station extends Model {
       iIndex = (int) Math.round(dIndex);
       sReturn = Windsector[iIndex];
     } catch (Exception eX) {
-      sReturn = "Error " + eX.getMessage();
+      Logger.error("currentWindCompass Error " + eX.getMessage());
     }
 
     return sReturn;
@@ -225,7 +237,6 @@ public class Station extends Model {
   /**
    * Return current wind chill as string Based Appendix A - v of specifications
    *
-   * @version (03 - May - 2022)
    */
   public String currentWindChill() {
     String sReturn = "---";
@@ -236,16 +247,14 @@ public class Station extends Model {
       double dWindChill = 13.12 + (0.6215 * dTemperature) - 11.37 * (Math.pow(dWindKph, 0.16)) + 0.3965 * dTemperature * Math.pow(dWindKph, 0.16);//funny cals but ok
       sReturn = String.format("Feels like %.2f", dWindChill); // Limit number to 2 decimal places fro display
     } catch (Exception eX) {
-      sReturn = "Error " + eX.getMessage();
+      Logger.error("currentWindChill Error " + eX.getMessage());
     }
-
     return sReturn;
   }
 
   /**
    * Return min win speed as string in kph based on Appendix A - ii of specifications
    *
-   * @version (15 - May - 2022)
    */
   public String minWindSpeed() {
     String sReturn = "---";
@@ -258,7 +267,7 @@ public class Station extends Model {
       }
       sReturn = dMinSpeed + " kph ";
     } catch (Exception eX) {
-      sReturn = "Error " + eX.getMessage();
+      Logger.error("minWindSpeed Error " + eX.getMessage());
     }
     return sReturn;
   }
@@ -266,7 +275,6 @@ public class Station extends Model {
   /**
    * Return max wind speed as string in kph based on Appendix A - ii of specifications
    *
-   * @version (15 - May - 2022)
    */
   public String maxWindSpeed() {
     String sReturn = "---";
@@ -279,7 +287,7 @@ public class Station extends Model {
       }
       sReturn = dMaxSpeed + " kph ";
     } catch (Exception eX) {
-      sReturn = "Error " + eX.getMessage();
+      Logger.error("maxWindSpeed Error " + eX.getMessage());
     }
     return sReturn;
   }
@@ -287,7 +295,6 @@ public class Station extends Model {
   /**
    * Return current Wind as string Baufort based on Appendix A - iii of specifications
    *
-   * @version (03 - May - 2022)
    */
   public String currentWind(Boolean xAsLabel) {
     String sReturn = "---";
@@ -380,7 +387,7 @@ public class Station extends Model {
         }
       }
     } catch (Exception eX) {
-      sReturn = "Error " + eX.getMessage();
+      Logger.error("currentWind Error " + eX.getMessage());
     }
 
     return sReturn;
@@ -390,7 +397,6 @@ public class Station extends Model {
   /**
    * Return current conditions as string based on Appendix A - i of specifications
    *
-   * @version (03 - May - 2022)
    */
   public String currentConditions() {
     String sReturn = "";
@@ -426,30 +432,14 @@ public class Station extends Model {
 
       }
     } catch (Exception eX) {
-      sReturn = "Error " + eX.getMessage();
+      Logger.error("currentConditions Error " + eX.getMessage());
     }
     return sReturn;
   }
 
-
-  public void SortByDate(Boolean xDecending) {
-    Collections.sort(readings, new Reading.CompareLogDate(xDecending));
-    xReadingsDateDec = xDecending;
-  }
-
-  public boolean ReadingsSortedbyDateDec() {
-    return xReadingsDateDec;
-  }
-
-  public boolean ReadingsSortedbyDateAsc() {
-    return !xReadingsDateDec;
-  }
-
-
   /**
    * Return Integer representing Trend of temp values Integer + Positive, - Negative , 0 Static
    *
-   * @version (16 - May - 2022)
    */
   public Integer trendTemperature() {
     Integer iReturnValue = 0;
@@ -510,8 +500,7 @@ public class Station extends Model {
 
   /**
    * Return Integer representing Trend of Pressure values Integer + Positive, - Negative , 0 Static
-   *
-   * @version (16 - May - 2022)
+   * allow overload if no value passed in then trend all values
    */
   public Integer trendPressure() {
     Integer iReturnValue = 0;
@@ -570,17 +559,14 @@ public class Station extends Model {
 
   /**
    * Return Integer representing Trend of Wind speed values Integer + Positive, - Negative , 0 Static
-   *
-   * @version (16 - May - 2022)
+   * allow overload if no value passed in then trend all values
    */
   public Integer trendWind() {
     Integer iReturnValue = 0;
     ArrayList<Double> xValues; //date time stamp
     ArrayList<Double> yValues; //date time stamp
-
     xValues = new ArrayList<>();
     yValues = new ArrayList<>();
-
 
     for (Integer iX = 0; iX < this.readings.size(); iX++) {
       Reading mReading = this.readings.get(iX);
@@ -595,7 +581,6 @@ public class Station extends Model {
     } else {
       iReturnValue = 0;
     }
-
     return iReturnValue;
   }
 
@@ -629,10 +614,8 @@ public class Station extends Model {
     return iReturnValue;
   }
 
-  /**
+  /*
    * Return average Value of a list of doubles
-   *
-   * @version (16 - May - 2022)
    */
   private static double average(List<Double> lstDouble) {
     Double dReturn;
@@ -645,7 +628,7 @@ public class Station extends Model {
     return dReturn;
   }
 
-  /**
+  /*
    * Return the slope or trend for an array code based on formula outlined in
    * https://study.com/academy/lesson/what-is-a-trend-line-in-math-definition-equation-analysis.html
    */

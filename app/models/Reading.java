@@ -29,46 +29,48 @@ public class Reading extends Model {
                  Double dWindSpeed,
                  Integer iPressure,
                  Integer iWindDirection,
-                 String sDate)
-  {
+                 String sDate) {
     try {
       if (iCode > 0) {
         this.code = iCode;
       }
-      if (dTemperature != null){
+      if (dTemperature != null) {
         this.temperature = dTemperature;
-      }else{
+      } else {
         this.temperature = 0d;
       }
-      if ((dWindSpeed != null) || (dWindSpeed < 0)){
-        this.windSpeed = dWindSpeed;
-      }else{
-        this.windSpeed = 0d;
+      if (dWindSpeed != null) {
+        if (dWindSpeed < 0) {
+          dWindSpeed = 0d;
+        }
+      } else {
+        dWindSpeed = 0d;
       }
-      if(iPressure ==null){
+      this.windSpeed = dWindSpeed;
+      if (iPressure == null) {
         iPressure = 1013; // nominal pressure
-      } else if (iPressure >2000){
-        iPressure =2000; //max pressure on earth ever recorded was 1084
-      }else if (iPressure < 500 ){
-        iPressure =500;//870 would be in a tornado
+      } else if (iPressure > 2000) {
+        iPressure = 2000; //max pressure on earth ever recorded was 1084
+      } else if (iPressure < 500) {
+        iPressure = 500;//870 would be in a tornado
       }
       this.pressure = iPressure;
 
       // Clamp the wind Direction 0 to 360 degrees
-      if ((iWindDirection==null) || (iWindDirection<0)) {
+      if ((iWindDirection == null) || (iWindDirection < 0)) {
         iWindDirection = 0;
-      }else if(iWindDirection>360){
-        iWindDirection =360;
+      } else if (iWindDirection > 360) {
+        iWindDirection = 360;
       }
 
       this.windDirection = iWindDirection;
-      if(sDate ==null){
-        sDate="2000-01-01 00:00:00";
+      if (sDate == null) {
+        sDate = "2000-01-01 00:00:00";
       }
       setDate(sDate);
     } catch (Exception eX) {
-     //add dummy data to db
-      this.code =0;
+      //add dummy data to db
+      this.code = 0;
       this.temperature = 0d;
       this.windSpeed = 0d;
       this.pressure = 0;
@@ -78,11 +80,14 @@ public class Reading extends Model {
   }
 
   //adapted from post on https://stackoverflow.com/questions/2784514/sort-arraylist-of-custom-objects-by-property
+  //based on arraylist Comparator
   public static class CompareLogDate implements Comparator<Reading> {
     private int mod = 1;
+
     public CompareLogDate(boolean desc) {
       if (desc) mod = -1;
     }
+
     @Override
     public int compare(Reading arg0, Reading arg1) {
       return mod * arg0.epocDateSeconds.compareTo(arg1.epocDateSeconds);
@@ -90,11 +95,9 @@ public class Reading extends Model {
   }
 
   public String getDate() {
-    String sReturnValue = "Invalid";
+    String sReturnValue;
     DateTimeFormatter oFormatObj = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
-
     sReturnValue = this.date.format(oFormatObj);
-
     return sReturnValue;
   }
 

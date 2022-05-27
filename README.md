@@ -17,6 +17,8 @@ Project DB deployed using ElephantSQL [ProjectDB](https://api.elephantsql.com/co
 ## External references used
 - Wind direction in degrees to Cardinal Points conversion  
   - [Campbell Scientific](https://www.campbellsci.com/blog/convert-wind-directions)
+- Trend lines and correct calculations
+  - [what-is-a-trend-line](https://study.com/academy/lesson/what-is-a-trend-line-in-math-definition-equation-analysis.html)
 - GPS coordinate limits
   - [MapBox](https://docs.mapbox.com/help/glossary/lat-lon/#:~:text=Latitude%20and%20longitude%20are%20a,180%20to%20180%20for%20longitude.)
 - Interface Comparitor used when sorting arrays of objects;

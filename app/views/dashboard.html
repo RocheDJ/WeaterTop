@@ -15,8 +15,12 @@
   </h2>
   #{current station:station /}
   <p>Click for Details</p>
-  <a href="/station/${station.id}"><button class="ui button"><i class="folder open icon"></i></button> </a>
-  <a href="/station/${station.id}/delete"><button class="ui button"><i class="trash alternate icon"></i></button> </a>
+  <a href="/station/${station.id}">
+    <button class="ui button"><i class="folder open icon"></i></button>
+  </a>
+  <a href="/station/${station.id}/delete">
+    <button class="ui button"><i class="trash alternate icon"></i></button>
+  </a>
 </section>
 #{/list}
 #{addstation /}

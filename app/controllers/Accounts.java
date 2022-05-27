@@ -5,6 +5,18 @@ import models.Member;
 import play.Logger;
 import play.mvc.Controller;
 
+/**
+ * This is the Accounts class that handles Account,
+ * Signup,
+ * Login,
+ * LogOut,
+ * authentication,
+ * Updating
+ * Retrieval of member details
+ *
+ * @author Dave
+ * @version (27 - May - 2022)
+ */
 
 public class Accounts extends Controller {
 
@@ -16,38 +28,8 @@ public class Accounts extends Controller {
     render("login.html");
   }
 
-  public static void register(String firstname, String lastname, String email, String password) {
-    Logger.info("Registering new user " + email);
-    Member member = new Member(firstname, lastname, email, password);
-    member.save();
-    redirect("/");
-  }
-
-
-  public static void update(String firstname, String lastname, String email, String passwordOld, String passwordNew,String passwordConfirm) {
-    Logger.info("Up-dating " + email);
-    Member member = null;
-    Boolean updatedOK = false;
-    if (session.contains("logged_in_Memberid")) {
-      String memberId = session.get("logged_in_Memberid");
-      member = Member.findById(Long.parseLong(memberId));
-      //Only allow editing if old password is valid and new passwords and confirm are a match
-      if((member.password.equals(passwordOld)) && (passwordNew.equals(passwordConfirm))){
-        member.email=email;
-        member.firstname=firstname;
-        member.lastname=lastname;
-        member.password=passwordNew;
-        member.save();
-        updatedOK =true;
-      }
-    }
-    render("edit-member.html", member,updatedOK);
-  }
-
-
   public static void authenticate(String email, String password) {
     Logger.info("Attempting to authenticate with " + email + ":" + password);
-
     Member member = Member.findByEmail(email);
     if ((member != null) && (member.checkPassword(password) == true)) {
       Logger.info("Authentication successful");
@@ -62,6 +44,33 @@ public class Accounts extends Controller {
   public static void logout() {
     session.clear();
     redirect("/");
+  }
+
+  public static void register(String firstname, String lastname, String email, String password) {
+    Logger.info("Registering new user " + email);
+    Member member = new Member(firstname, lastname, email, password);
+    member.save();
+    redirect("/");
+  }
+
+  public static void update(String firstname, String lastname, String email, String passwordOld, String passwordNew, String passwordConfirm) {
+    Logger.info("Up-dating " + email);
+    Member member = null;
+    Boolean updatedOK = false;
+    if (session.contains("logged_in_Memberid")) {
+      String memberId = session.get("logged_in_Memberid");
+      member = Member.findById(Long.parseLong(memberId));
+      //Only allow editing if old password is valid and new passwords and confirm are a match
+      if ((member.password.equals(passwordOld)) && (passwordNew.equals(passwordConfirm))) {
+        member.email = email;
+        member.firstname = firstname;
+        member.lastname = lastname;
+        member.password = passwordNew;
+        member.save();
+        updatedOK = true;
+      }
+    }
+    render("edit-member.html", member, updatedOK);
   }
 
   public static Member getLoggedInMember() {

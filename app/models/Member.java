@@ -7,7 +7,15 @@ import javax.persistence.Entity;
 import javax.persistence.OneToMany;
 import java.util.ArrayList;
 import java.util.List;
-
+/**
+ * This is the member class that stores the member details
+ * allows acess to
+ * return member by email address(findByEmail)
+ * check if password is correct (checkPassword)
+ * NOTE:Encryption and decryption of password not included in ths version,
+ * @version (27 - May - 2022)
+ * @author Dave
+ */
 @Entity
 public class Member extends Model {
   public String firstname;
@@ -16,7 +24,7 @@ public class Member extends Model {
   public String password;
 
   @OneToMany(cascade = CascadeType.ALL)
-  public List<Station> stations = new ArrayList<Station>();
+  public List<Station> stations = new ArrayList<>();
 
   public Member(String firstname, String lastname, String email, String password) {
     this.firstname = firstname;
