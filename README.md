@@ -1,7 +1,7 @@
 # David Roche 
 
 # Student ID  
-
+- 93521243
 # Readme file for Programming-Web Development / Joint Assignment "WeatherTop"  (May 2022)
 
 ## Introduction
@@ -9,11 +9,14 @@ WeatherTop Inc. produce a modular weather station called the WeatherTop 1000. Th
 display. WeatherTop Inc. are seeking a Web companion application for the device.
 
 ## Github Repo
-A repository for the WeatherTop project is here [GitHubRepo](https://github.com/RocheDJ/WeaterTop.git) 
+A repository for the WeatherTop project is here
+- [GitHubRepo](https://github.com/RocheDJ/WeaterTop.git) 
 ## Live Web Deployment
-A Live Web-deployment the WeatherTop project is here [HerokuPage](https://warm-peak-91173.herokuapp.com)
-##DB used
-Project DB deployed using ElephantSQL [ProjectDB](https://api.elephantsql.com/console/f4bc670c-3353-4650-aaab-0a09023a9798/details)
+A Live Web-deployment the WeatherTop project is here 
+- [HerokuPage](https://warm-peak-91173.herokuapp.com)
+## DB used
+Project DB deployed using ElephantSQL 
+- [ProjectDB](https://api.elephantsql.com/console/f4bc670c-3353-4650-aaab-0a09023a9798/details)
 ## External references used
 - Wind direction in degrees to Cardinal Points conversion  
   - [Campbell Scientific](https://www.campbellsci.com/blog/convert-wind-directions)
