@@ -111,7 +111,7 @@ public class Station extends Model {
     return sReturn;
   }
 
-  /**
+  /*
    * Return max pressure as string in Deg C and F based on Appendix A - ii of specifications
    *
    */
@@ -131,7 +131,7 @@ public class Station extends Model {
     return sReturn;
   }
 
-  /**
+  /*
    * Return min pressure as string in Deg C and F based on Appendix A - ii of specifications
    *
    */
@@ -151,7 +151,7 @@ public class Station extends Model {
     return sReturn;
   }
 
-  /**
+  /*
    * Return max temperiture as string in Deg C and F based on Appendix A - ii of specifications
    *
    */
@@ -171,7 +171,7 @@ public class Station extends Model {
     return sReturn;
   }
 
-  /**
+  /*
    * Return min temperature as string in Deg C and F based on Appendix A - ii of specifications
    *
    */
@@ -191,7 +191,7 @@ public class Station extends Model {
     return sReturn;
   }
 
-  /**
+  /*
    * Return current Temp as string in Deg C and F based on Appendix A - ii of specifications
    *
    */
@@ -205,8 +205,17 @@ public class Station extends Model {
     }
     return sReturn;
   }
-
-  /**
+  public Double currentTempValue() {
+    Double dReturn = 0.0;
+    try {
+      Reading lastReading = currentReading();
+      dReturn = lastReading.temperature;
+    } catch (Exception eX) {
+      Logger.error("currentTempValue Error " + eX.getMessage());
+    }
+    return dReturn;
+  }
+  /*
    * Return current Compass Direction as string in Cardinal Points based on Appendix A - iv of specifications
    *
    */
@@ -234,7 +243,7 @@ public class Station extends Model {
     return sReturn;
   }
 
-  /**
+  /*
    * Return current wind chill as string Based Appendix A - v of specifications
    *
    */
@@ -252,7 +261,7 @@ public class Station extends Model {
     return sReturn;
   }
 
-  /**
+  /*
    * Return min win speed as string in kph based on Appendix A - ii of specifications
    *
    */
@@ -272,7 +281,7 @@ public class Station extends Model {
     return sReturn;
   }
 
-  /**
+  /*
    * Return max wind speed as string in kph based on Appendix A - ii of specifications
    *
    */
@@ -292,8 +301,7 @@ public class Station extends Model {
     return sReturn;
   }
 
-  /**
-   * Return current Wind as string Baufort based on Appendix A - iii of specifications
+  /*Return current Wind as string Beaufort based on Appendix A - iii of specifications
    *
    */
   public String currentWind(Boolean xAsLabel) {
@@ -394,9 +402,7 @@ public class Station extends Model {
 
   }
 
-  /**
-   * Return current conditions as string based on Appendix A - i of specifications
-   *
+  /*Return current conditions as string based on Appendix A - i of specifications
    */
   public String currentConditions() {
     String sReturn = "";
@@ -429,7 +435,6 @@ public class Station extends Model {
           break;
         default:
           sReturn = "Unknown code";
-
       }
     } catch (Exception eX) {
       Logger.error("currentConditions Error " + eX.getMessage());
@@ -437,9 +442,8 @@ public class Station extends Model {
     return sReturn;
   }
 
-  /**
+  /*
    * Return Integer representing Trend of temp values Integer + Positive, - Negative , 0 Static
-   *
    */
   public Integer trendTemperature() {
     Integer iReturnValue = 0;
@@ -498,7 +502,7 @@ public class Station extends Model {
     return iReturnValue;
   }
 
-  /**
+  /*
    * Return Integer representing Trend of Pressure values Integer + Positive, - Negative , 0 Static
    * allow overload if no value passed in then trend all values
    */
@@ -557,7 +561,7 @@ public class Station extends Model {
   }
 
 
-  /**
+  /*
    * Return Integer representing Trend of Wind speed values Integer + Positive, - Negative , 0 Static
    * allow overload if no value passed in then trend all values
    */

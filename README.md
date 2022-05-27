@@ -33,4 +33,6 @@ Project DB deployed using ElephantSQL
   - [w3Schools](https://www.w3schools.com/howto/howto_js_toggle_password.asp)
 - Template,fomantic ui templates used in this app
   - [Fomantic](https://fomantic-ui.com/)
+- Play Framework tag documentation on calls
+  - [Play Framework](https://www.playframework.com/documentation/1.2.1/tags)
   

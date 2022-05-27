@@ -11,9 +11,9 @@
             <div class="column">
               <div class="ui inverted segment" data-tooltip="Click icon to map GPS location in new window.">
                 <a href="https://www.google.ie/maps/place/${_station.latitude},${_station.longitude}" target="_blank">
-                  <i class="big map marker icon blue" > </i>
+                  <i class="big map marker icon blue"> </i>
                 </a>
-             </div>
+              </div>
             </div>
           </div>
         </div>
@@ -64,7 +64,14 @@
               <div class="ui inverted segment"> Temp</div>
             </div>
             <div class="column">
-              <div class="ui inverted segment"><i class="big temperature low icon blue"></i></div>
+              <div class="ui inverted segment">
+                #{if _station.currentTempValue() >19.0 }
+                    <i class="big temperature low icon red"></i>
+                #{/if}
+                #{else}
+                  <i class="big temperature low icon white"></i>
+                #{/else}
+              </div>
             </div>
           </div>
         </div>
@@ -143,7 +150,6 @@
             </div>
           </div>
         </div>
-
 
         <div class="ui grid">
           <div class="stretched one column row">
